@@ -7,7 +7,7 @@ use App\Tag;
 use Carbon\Carbon;
 use Illuminate\Contracts\Bus\SelfHandling;
 
-class BlogIndexData extends Job implements SelfHandling
+class LoadBlogPage extends Job implements SelfHandling
 {
     protected $tag;
 
