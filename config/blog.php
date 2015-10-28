@@ -1,7 +1,7 @@
 <?php
 return [
-  'name' => "L5 Beauty",
-  'title' => "Laravel 5.1 Beauty",
+  'name' => "Larasense",
+  'title' => "Larasense",
   'subtitle' => 'A clean blog written in Laravel 5.1',
   'description' => 'This is my meta description',
   'author' => 'TeeJaY',

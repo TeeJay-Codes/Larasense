@@ -1,31 +1,60 @@
 <?php
 
-// Blog pages
-get('/', function () {
-  return redirect('/blog');
-});
-get('blog', 'BlogController@index');
-get('blog/{slug}', 'BlogController@showPost');
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
+|
+*/
 
-// Admin area
-get('admin', function () {
-  return redirect('/admin/post');
+Route::get('/', function () {
+    return view('pages.index');
 });
-$router->group([
-  'namespace' => 'Admin',
-  'middleware' => 'auth',
+
+
+// Blog Route Group
+Route::group(['prefix' => 'blog'], function () {
+    Route::get('/', [
+        'as'    => 'blog',
+        'uses'  => 'BlogController@index'
+    ]);
+
+    Route::get('/{slug}', [
+        'as'    => 'blog.show',
+        'uses'  => 'BlogController@showPost'
+    ]);
+});
+
+
+// Redirect to Admin area
+Route::get('admin', function () {
+    return redirect('/admin/post');
+});
+
+
+// Admin Area Routes
+Route::group([
+        'prefix'        => 'admin',
+        'namespace'     => 'Admin',
+        'middleware'    => 'auth'
 ], function () {
-  resource('admin/post', 'PostController', ['except' => 'show']);
-  resource('admin/tag', 'TagController', ['except' => 'show']);
-  get('admin/upload', 'UploadController@index');
-  post('admin/upload/file', 'UploadController@uploadFile');
-  delete('admin/upload/file', 'UploadController@deleteFile');
-  post('admin/upload/folder', 'UploadController@createFolder');
-  delete('admin/upload/folder', 'UploadController@deleteFolder');
+        Route::resource('/post',        'PostController', ['except' => 'show']);
+        Route::resource('/tag',         'TagController', ['except' => 'show']);
+        Route::get('/upload',           'UploadController@index');
+        Route::post('/upload/file',     'UploadController@uploadFile');
+        Route::delete('/upload/file',   'UploadController@deleteFile');
+        Route::post('/upload/folder',   'UploadController@createFolder');
+        Route::delete('/upload/folder', 'UploadController@deleteFolder');
 });
 
 
-// Logging in and out
-get('/auth/login', 'Auth\AuthController@getLogin');
-post('/auth/login', 'Auth\AuthController@postLogin');
-get('/auth/logout', 'Auth\AuthController@getLogout');
+// Authentication Route group
+Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
+    Route::get('/login', 'AuthController@getLogin');
+    Route::post('/login', 'AuthController@postLogin');
+    Route::get('/logout', 'AuthController@getLogout');
+});

@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Requests;
 
-class TagUpdateRequest extends Request
+class UpdateTagRequest extends Request
 {
 
   /**
